@@ -160,8 +160,6 @@ export function NavBarDrawer({ isOpen, onClose }) {
                 </Link>
               </Box>
             )}
-            {/* personlized settings  */}
-            {/* ADMIND and teacher options  */}
             {userStore?.role == "admin" || userStore?.role=='teacher' ? (
               <Box p="0.5rem 0" borderTop="1px solid #3A3F3F">
                 <Box>
@@ -181,7 +179,7 @@ export function NavBarDrawer({ isOpen, onClose }) {
                     <Text
                       fontSize="0.8rem" p="1rem 0"
                     >
-                      Admin Dashboard
+                      {userStore.role === 'admin' ? 'Admin' : 'Teacher'} Dashboard
                     </Text>
                   </Link>
                   <Link to="/admin/courses">
@@ -191,25 +189,26 @@ export function NavBarDrawer({ isOpen, onClose }) {
                       Courses
                     </Text>
                   </Link>
+                  {userStore.role === 'admin' && 
                   <Link to="/admin/users">
                     <Text
                       fontSize="0.8rem" p="1rem 0"
                     >
                       Users
                     </Text>
-                  </Link>
+                  </Link>}
+                  {userStore.role === 'admin'  && 
                   <Link to="/admin/videos">
                     <Text
                       fontSize="0.8rem" p="1rem 0"
                     >
                       AllVideos
                     </Text>
-                  </Link>
+                  </Link>}
                 </Box>
               </Box>
             ) : ""}
 
-            {/* users options  */}
             {userStore?.role == "user" && (
               <Box p="0.5rem 0" borderTop="1px solid #3A3F3F">
                 <Link to="/profile">

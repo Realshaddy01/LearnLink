@@ -96,7 +96,6 @@ const GiftCard = () => {
     setDiscount(data);
   };
   const handleClick = (id) => {
-    // console.log(id)
   };
 
   return (
@@ -104,7 +103,7 @@ const GiftCard = () => {
       {/* <AdminSidebar /> */}
       <Box mt='80px'>
         <AdminNavTop />
-        {/*  */}
+
         <Grid
           templateColumns={{
             xl: "repeat(3,1fr)",

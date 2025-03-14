@@ -1,4 +1,3 @@
-
 import {
   Box,
   Button,
@@ -41,7 +40,7 @@ import {
   useDisclosure
 } from "@chakra-ui/react";
 import { AddIcon, EditIcon, DeleteIcon, SearchIcon, ChevronDownIcon } from "@chakra-ui/icons";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import convertDateFormat, {
@@ -52,27 +51,30 @@ import Pagination from "./Pagination";
 import AdminNavTop from "../AdminNavTop";
 
 const Courses = () => {
-  // Redux and Router hooks
   const store = useSelector((store) => store.AdminReducer.data);
+  const userStore = useSelector((store) => store.UserReducer);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const toast = useToast();
   
-  // State management
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [order, setOrder] = useState("");
   const [selectedCourse, setSelectedCourse] = useState(null);
   const limit = 4;
   
-  // Responsive sizing
   const tableSize = useBreakpointValue({ base: "sm", md: "md", lg: "lg" });
   
-  // Alert dialog for delete confirmation
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
 
-  // Handlers
+  const filteredCourses = useMemo(() => {
+    if (userStore.role === "teacher" && store?.length > 0) {
+      return store.filter(course => course.teacherId === userStore.userId);
+    }
+    return store;
+  }, [store, userStore.role, userStore.userId]);
+
   const handleSearch = (e) => {
     setSearch(e.target.value);
   };
@@ -86,24 +88,11 @@ const Courses = () => {
     onOpen();
   };
 
-  // const handleDeleteConfirm = () => {
-  //   if (selectedCourse) {
-  //     dispatch(deleteProduct(selectedCourse._id));
-  //     toast({
-  //       title: "Course deleted",
-  //       description: `${selectedCourse.title} has been removed`,
-  //       status: "success",
-  //       duration: 3000,
-  //       isClosable: true,
-  //     });
-  //     onClose();
-  //   }
-  // };
   const handleDeleteConfirm = async () => {
     if (selectedCourse) {
       try {
-        await dispatch(deleteProduct(selectedCourse._id)); // Ensure deletion completes
-        dispatch(getProduct(page, limit, search, order)); // Fetch updated list
+        await dispatch(deleteProduct(selectedCourse._id));
+        dispatch(getProduct(page, limit, search, order));
   
         toast({
           title: "Course deleted",
@@ -120,8 +109,6 @@ const Courses = () => {
     }
   };
   
-  
-
   const handlePageChange = (page) => {
     setPage(page);
   };
@@ -130,15 +117,12 @@ const Courses = () => {
     setPage((prev) => prev + val);
   };
 
-  // Fetch courses when dependencies change
   useEffect(() => {
     dispatch(getProduct(page, limit, search, order));
   }, [page, search, order, limit, dispatch]);
 
-  // For pagination
-  const count = 4; // This should ideally come from the API
+  const count = 4;
 
-  // Truncate long text
   const truncateText = (text, maxLength = 30) => {
     return text?.length > maxLength ? text.substring(0, maxLength) + '...' : text;
   };
@@ -150,7 +134,9 @@ const Courses = () => {
         <Card shadow="md" borderRadius="lg" mb={6}>
           <CardHeader>
             <Flex direction={{ base: "column", md: "row" }} align="center" gap={4}>
-              <Heading size="lg">Course Management</Heading>
+              <Heading size="lg">
+                {userStore.role === "teacher" ? "My Courses" : "Course Management"}
+              </Heading>
               <Spacer />
               <HStack spacing={4} width={{ base: "100%", md: "auto" }}>
                 <InputGroup maxW={{ base: "100%", md: "300px" }}>
@@ -172,7 +158,7 @@ const Courses = () => {
           <CardBody>
             <Flex justifyContent="space-between" mb={4}>
               <Text fontWeight="medium" color="gray.600">
-                {store?.length} course{store?.length !== 1 ? 's' : ''} found
+                {filteredCourses?.length} course{filteredCourses?.length !== 1 ? 's' : ''} found
               </Text>
               
               <Button
@@ -200,8 +186,8 @@ const Courses = () => {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {store?.length > 0 ? (
-                    store.map((course) => (
+                  {filteredCourses?.length > 0 ? (
+                    filteredCourses.map((course) => (
                       <Tr key={course._id}>
                         <Td fontWeight="medium">{truncateText(course.title, 20)}</Td>
                         <Td display={{ base: "none", md: "table-cell" }}>{convertDateFormat(course.createdAt)}</Td>
@@ -250,7 +236,11 @@ const Courses = () => {
                       <Td colSpan={7} textAlign="center" py={10}>
                         <VStack spacing={3}>
                           <Text fontSize="lg">No courses found</Text>
-                          <Text color="gray.500">Try adjusting your search or create a new course</Text>
+                          <Text color="gray.500">
+                            {userStore.role === "teacher" 
+                              ? "You haven't created any courses yet" 
+                              : "Try adjusting your search or create a new course"}
+                          </Text>
                           <Button
                             as={Link}
                             to="/admin/addCourse"
@@ -294,7 +284,6 @@ const Courses = () => {
         </Card>
       </Container>
       
-      {/* Delete Confirmation Dialog */}
       <AlertDialog
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}

@@ -56,7 +56,6 @@ const Navbar = () => {
       >
         <Flex align="center">
           <Box>
-            {/* Logo */}
             {/* <img src={image} alt="Logo" width="30%" /> */}
             <Text
               fontSize={30}
@@ -88,7 +87,6 @@ const Navbar = () => {
 
         {!isMobile && (
           <Flex align="center">
-            {/* Links */}
             <Box mr={4}>
             </Box>
             {/* <Box mr={4}>

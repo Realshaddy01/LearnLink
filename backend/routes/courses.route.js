@@ -36,15 +36,6 @@ courseRoute.get("/all", async (req, res) => {
   }
 });
 
-
-
-
-
-courseRoute.use(auth);
-// Protected Routes
-
-
-
 courseRoute.get("/", async (req, res) => {
   try {
     let { q, sortBy, sortOrder, page, limit } = req.query;
@@ -88,10 +79,8 @@ courseRoute.get("/:courseID", async (req, res) => {
 
 courseRoute.post("/add", async (req, res) => {
   try {
-    if (req.body.role == "admin" || req.body.role == "teacher") {
       const { title, teacher ,learnings } = req.body;
       const course = await courseModel.find({ title, teacher });
-      //console.log(course)
       if (course.length) {
         res.status(403).json({ message: "Course Already Present" });
       } else {
@@ -100,9 +89,6 @@ courseRoute.post("/add", async (req, res) => {
         await newCourse.save();
         res.status(201).json({ message: "Course Added", data: newCourse });
       }
-    } else {
-      res.status(401).json({ error: "you don't have access to add course" });
-    }
   } catch (err) {
     res
       .status(400)
@@ -112,7 +98,6 @@ courseRoute.post("/add", async (req, res) => {
 
 courseRoute.patch("/update/:courseID", async (req, res) => {
   try {
-    if (req.body.role == "admin" || req.body.role == "teacher") {
       const courseID = req.params.courseID;
       const course = await courseModel.findByIdAndUpdate(
         { _id: courseID },
@@ -124,9 +109,6 @@ courseRoute.patch("/update/:courseID", async (req, res) => {
       } else {
         res.status(202).json({ message: "course updated", course });
       }
-    } else {
-      res.status(401).json({ error: "you don't have access to update course" });
-    }
   } catch (err) {
     res
       .status(400)
@@ -136,7 +118,6 @@ courseRoute.patch("/update/:courseID", async (req, res) => {
 
 courseRoute.delete("/delete/:courseID", async (req, res) => {
   try {
-    if (req.body.role == "admin" || req.body.role == "teacher") {
       const courseID = req.params.courseID;
       const course = await courseModel.findByIdAndDelete({ _id: courseID });
      // console.log(course);
@@ -145,11 +126,6 @@ courseRoute.delete("/delete/:courseID", async (req, res) => {
       } else {
         res.status(200).json({ message: "course deleted", course });
       }
-    } else {
-      res
-        .status(401)
-        .json({ error: "you don't have access to delete the course" });
-    }
   } catch (err) {
     res
       .status(400)

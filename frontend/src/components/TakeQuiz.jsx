@@ -58,7 +58,6 @@ const TakeQuiz = () => {
         );
         
         setQuiz(response.data.quiz);
-        // Initialize selectedOptions array with nulls based on number of questions
         setSelectedOptions(new Array(response.data.quiz.questions.length).fill(null));
       } catch (err) {
         toast({
@@ -95,7 +94,6 @@ const TakeQuiz = () => {
   };
 
   const handleSubmitQuiz = () => {
-    // Check if all questions have been answered
     const unansweredQuestions = selectedOptions.findIndex(option => option === null);
     
     if (unansweredQuestions !== -1) {
@@ -110,7 +108,6 @@ const TakeQuiz = () => {
       return;
     }
 
-    // Calculate results
     let correctCount = 0;
     const wrongAnswers = [];
 
@@ -165,7 +162,6 @@ const TakeQuiz = () => {
   const currentQuestion = quiz.questions[currentQuestionIndex];
   const progress = ((currentQuestionIndex + 1) / quiz.questions.length) * 100;
 
-  // Results screen
   if (quizSubmitted) {
     const score = Math.round((results.correctAnswers / results.totalQuestions) * 100);
     const isPerfect = results.correctAnswers === results.totalQuestions;
@@ -251,7 +247,6 @@ const TakeQuiz = () => {
     );
   }
 
-  // Quiz taking screen
   return (
     <Container maxW="800px" mt="20" mb="8">
       <Card variant="outline" borderWidth="1px" p="4">
@@ -332,7 +327,6 @@ const TakeQuiz = () => {
               )}
             </Flex>
             
-            {/* Navigation dots */}
             <Flex justify="center" mt="2">
               {quiz.questions.map((_, index) => (
                 <Icon 

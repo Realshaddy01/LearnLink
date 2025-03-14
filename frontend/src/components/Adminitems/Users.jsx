@@ -51,27 +51,22 @@ import Pagination from "./Pagination";
 import AdminNavTop from "../AdminNavTop";
 
 const Users = () => {
-  // Redux and Router hooks
   const store = useSelector((store) => store.AdminReducer.users);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const toast = useToast();
   
-  // State management
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [order, setOrder] = useState("");
   const [selectedUser, setSelectedUser] = useState(null);
-  const limit = 5; // Changed from 4 to 5 as requested
+  const limit = 5;
   
-  // Responsive sizing
   const tableSize = useBreakpointValue({ base: "sm", md: "md", lg: "lg" });
   
-  // Alert dialog for delete confirmation
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
 
-  // Handlers
   const handleSearch = (e) => {
     setSearch(e.target.value);
   };
@@ -89,7 +84,7 @@ const Users = () => {
     if (selectedUser) {
       try {
         await dispatch(deleteUsers(selectedUser._id));
-        dispatch(getUser(page, limit)); // Refresh the list
+        dispatch(getUser(page, limit));
         
         toast({
           title: "User deleted",
@@ -114,15 +109,12 @@ const Users = () => {
     setPage((prev) => prev + val);
   };
 
-  // Fetch users when dependencies change
   useEffect(() => {
     dispatch(getUser(page, limit));
   }, [page, limit, dispatch]);
 
-  // For pagination
-  const count = Math.ceil((store?.length || 0) / limit) || 2; // Calculate number of pages based on data length
+  const count = Math.ceil((store?.length || 0) / limit) || 2;
 
-  // Truncate long text
   const truncateText = (text, maxLength = 30) => {
     return text?.length > maxLength ? text.substring(0, maxLength) + '...' : text;
   };
@@ -257,7 +249,6 @@ const Users = () => {
         </Card>
       </Container>
       
-      {/* Delete Confirmation Dialog */}
       <AlertDialog
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}

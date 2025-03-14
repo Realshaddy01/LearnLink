@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import AdminNavTop from "../AdminNavTop";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addProduct } from "../../Redux/AdminReducer/action";
 import { useNavigate } from "react-router-dom";
 
@@ -46,9 +46,13 @@ const AddCourse = () => {
       setLearningInput("");
     }
   };
+  const userStore = useSelector((store) => store.UserReducer);
 
   const handleSubmit = () => {
-    dispatch(addProduct(detail));
+    dispatch(addProduct({
+    ...detail,
+    userId: userStore.userId
+  }));
     alert("Course Added Successfully");
     navigate("/admin/courses");
   };

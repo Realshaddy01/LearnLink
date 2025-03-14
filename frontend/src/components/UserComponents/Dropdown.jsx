@@ -174,7 +174,7 @@ const Dropdown = () => {
                     fontWeight="500"
                     borderTop="1px solid #D7DBDD"
                   >
-                    Admin Dashboard
+                    {userStore.role === 'admin' ? 'Admin' : 'Teacher'} Dashboard
                   </MenuItem>
                 </Link>
                 <Link to="/admin/courses">
@@ -186,6 +186,7 @@ const Dropdown = () => {
                     Courses
                   </MenuItem>
                 </Link>
+                  {userStore.role === 'admin' && 
                 <Link to="/admin/users">
                   <MenuItem
                     p="0.7rem 0"
@@ -194,7 +195,8 @@ const Dropdown = () => {
                   >
                     Users
                   </MenuItem>
-                </Link>
+                </Link>}
+                {userStore.role === 'admin' && 
                 <Link to="/admin/videos">
                   <MenuItem
                     p="0.7rem 0"
@@ -203,7 +205,7 @@ const Dropdown = () => {
                   >
                     AllVideos
                   </MenuItem>
-                </Link>
+                </Link>}
               </Box>
             ) : ''}
           </MenuList>

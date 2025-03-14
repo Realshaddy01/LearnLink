@@ -77,7 +77,7 @@ const AdminSidebar = () => {
       >
         <Box mt={5}>
           <Link to="/admin/dashboard">
-            <Box p={2}>Admin Dashboard</Box>
+            <Box p={2}>{userStore.role === 'admin' ? 'Admin' : 'Teacher'} Dashboard</Box>
           </Link>
           <Link to="/learnlink">
             <Box p={2}>User Dashboard</Box>

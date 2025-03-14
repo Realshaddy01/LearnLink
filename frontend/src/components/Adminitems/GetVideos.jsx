@@ -38,9 +38,8 @@ const GetVideos = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
-  const limit = 5; // Changed to 5 to match request
+  const limit = 5;
   
-  // Responsive sizing
   const tableSize = useBreakpointValue({ base: "sm", md: "md", lg: "lg" });
 
   useEffect(() => {
@@ -62,7 +61,6 @@ const GetVideos = () => {
     setPage((prev) => prev + val);
   };
 
-  // Truncate long text
   const truncateText = (text, maxLength = 30) => {
     return text?.length > maxLength ? text.substring(0, maxLength) + '...' : text;
   };

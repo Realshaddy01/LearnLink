@@ -134,7 +134,7 @@ useEffect(() => {
                         <p>Created by</p>
                       </Box>
                       <Box color="#a435f0" className="text-[12px] underline ">
-                        {/* Andrei Negoie */}
+                        
 
                         {res?.course?.teacher}
                       </Box>

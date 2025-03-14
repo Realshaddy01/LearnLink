@@ -10,7 +10,6 @@
      rgba(0, 0, 0, 0) linear-gradient(315deg, rgb(189, 5, 245) 100%, rgba(9, 245, 5, 0) 70%) repeat scroll 0% 0%;
   }
   
-  /* Shapes */
   .background .shape {
     filter: blur(465px);
     position: absolute;
@@ -39,7 +38,6 @@
     height: 300px;
   }
   
-  /* Other page styling */
   * {
     margin: 0;
     padding: 0;

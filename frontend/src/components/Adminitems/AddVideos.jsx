@@ -37,7 +37,6 @@ const AddVideo = () => {
     });
   };
   const handleSubmit = () => {
-    // console.log(detail);
     dispatch(addVideo(detail, detail.courseId));
     alert("Video Added Successfully");
     navigate("/admin/videos");

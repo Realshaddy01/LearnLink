@@ -1,12 +1,15 @@
 import React from 'react';
 import { Book, Users, Award, Video, FileText, Settings, VideoIcon, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const MinimalDashboard = () => {
+  
+  const userStore = useSelector((store)=>store.UserReducer);
   return (
     <div className="min-h-screen bg-white p-8 mt-[90px]">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800">Welcome to Learn Link Admin</h1>
+        <h1 className="text-3xl font-bold text-gray-800">Welcome to Learn Link</h1>
         <p className="text-gray-500 mt-1">Manage your learning platform with ease</p>
       </div>
 
@@ -18,20 +21,23 @@ const MinimalDashboard = () => {
           path='/admin/courses'
         />
         
+        {userStore.role === 'admin' && 
         <DashboardPanel 
           title="Students" 
           icon={<Users size={24} />}
           color="purple"
           path={'/admin/users'}
-        />
+        />}
         
+        {userStore.role === 'admin' && 
         <DashboardPanel 
           title="All Videos" 
           icon={<VideoIcon size={24} />}
           color="green"
           path={'/admin/videos'}
         />
-        
+        }
+
         <DashboardPanel 
           title="Account" 
           icon={<User size={24} />}
@@ -43,7 +49,6 @@ const MinimalDashboard = () => {
   );
 };
 
-// Simple Dashboard Panel Component
 const DashboardPanel = ({ title, icon, color,path }) => {
   const navigate = useNavigate()
   const colorMap = {

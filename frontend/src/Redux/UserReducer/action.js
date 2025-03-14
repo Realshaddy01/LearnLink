@@ -20,23 +20,27 @@ export const loginFetch = (value) => (dispatch) => {
 
     })
     .catch((err) => {
-      dispatch(actionLoginError(err.message));
+      dispatch(actionLoginError(err?.response.data.msg));
       console.log(err);
     });
 };
 
 export const signUpFetch = (value) => (dispatch) => {
   dispatch(actionsignUpLoading());
+
   return axios
     .post(`${baseURL}users/register`, value)
     .then((res) => {
       dispatch(actionsingUpSuccess());
+      return { success: true, message: "SignUp Successful" }; // ✅ Return success response
     })
     .catch((err) => {
-      dispatch(actionsingUpError(err.response?.data.msg));
-      console.log(err);
+      const errorMessage = err.response?.data.msg || "SignUp Failed";
+      dispatch(actionsingUpError(errorMessage));
+      return { success: false, message: errorMessage }; // ✅ Return error response
     });
 };
+
 
 // conver 1 letter to upper case and rest to lower
 export function capitalizeFirstLetter(string) {
