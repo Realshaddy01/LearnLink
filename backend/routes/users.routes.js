@@ -25,7 +25,7 @@ userRouter.get("/", auth, async (req, res) => {
 });
 
 userRouter.post("/register", async (req, res) => {
-  const { name, email, password, age, city, job, image } = req.body;
+  const { name, email, password, age, city, job, image,role } = req.body;
   const registeredUser = await UserModel.findOne({ email });
 
   if (registeredUser) {
@@ -45,6 +45,7 @@ userRouter.post("/register", async (req, res) => {
             city,
             job,
             image,
+            role,
           });
           await user.save();
           res.status(201).json({ msg: "user created succesfully", user });

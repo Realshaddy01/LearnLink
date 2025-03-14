@@ -70,7 +70,7 @@ const Courses = () => {
 
   const filteredCourses = useMemo(() => {
     if (userStore.role === "teacher" && store?.length > 0) {
-      return store.filter(course => course.teacherId === userStore.userId);
+      return store.filter(course => course?.teacherId === userStore.userId);
     }
     return store;
   }, [store, userStore.role, userStore.userId]);

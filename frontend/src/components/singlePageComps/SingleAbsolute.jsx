@@ -14,6 +14,27 @@ const SingleAbsolute = ({ props }) => {
 
   const userStore = useSelector((store) => store.UserReducer);
   const { id } = useParams();
+  
+  const [userCourseIds, setUserCourseIds] = useState([]);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const url = `http://localhost:5000/users/userCourse/${user.userId}`;
+  
+    axios
+      .get(url)
+      .then((res) => {
+        const courseIds = res.data.course.map(course => 
+          typeof course === 'string' ? course : course._id
+        );
+        console.log("User course IDs:", courseIds);
+        setUserCourseIds(courseIds);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -90,11 +111,15 @@ const SingleAbsolute = ({ props }) => {
             <Text>{}</Text>
         </Box>
         <button
-          onClick={handlePayment}
-          className=" border-2 w-full py-[7px] text-sm font-bold"
+          onClick={userCourseIds.includes(id) ? null : handlePayment}
+          className={`border-2 w-full py-[7px] text-sm font-bold ${
+            userCourseIds.includes(id) ? "bg-gray-500 cursor-not-allowed" : ""
+          }`}
+          disabled={userCourseIds.includes(id)}
         >
-          Buy this course
+          {userCourseIds.includes(id) ? "Already Purchased" : "Buy this course"}
         </button>
+
 
         <div className="items-center text-[10px] space-y-1 w-full justify-center flex flex-col py-2">
           <p>30-Day Money-Back Guarantee</p>

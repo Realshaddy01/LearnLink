@@ -5,6 +5,7 @@ import {
   FormLabel,
   Grid,
   Input,
+  Select,
   Text,
   Textarea,
 } from "@chakra-ui/react";
@@ -22,13 +23,12 @@ const AddUser = () => {
     name: "",
     email: "",
     password: "",
-    city: "",
-    age: "",
-    job: "",
-    image: "",
+    confirmPassword:"",
+    role: "user", 
   };
 
   const [detail, setDetail] = useState(obj);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,6 +36,7 @@ const AddUser = () => {
       return { ...prev, [name]: value };
     });
   };
+
   const handleSubmit = () => {
     dispatch(addUser(detail));
     alert("User Added Successfully");
@@ -59,7 +60,7 @@ const AddUser = () => {
             <FormLabel>Name</FormLabel>
             <Input
               type="text"
-              placeholder="Enter Course Title"
+              placeholder="Enter Name"
               name="name"
               value={detail.name}
               onChange={handleChange}
@@ -86,44 +87,25 @@ const AddUser = () => {
             />
           </FormControl>
           <FormControl mt={4}>
-            <FormLabel>City</FormLabel>
+            <FormLabel>Confirm Password</FormLabel>
             <Input
-              type="text"
-              placeholder="Enter City"
-              name="city"
-              value={detail.city}
+              type="confirmPassword"
+              placeholder="Enter Confirm Password"
+              name="confirmPassword"
+              value={detail.confirmPassword}
               onChange={handleChange}
             />
           </FormControl>
           <FormControl mt={4}>
-            <FormLabel>Age</FormLabel>
-            <Input
-              type="number"
-              placeholder="Enter Age"
-              name="age"
-              value={detail.age}
+            <FormLabel>Role</FormLabel>
+            <Select
+              name="role"
+              value={detail.role}
               onChange={handleChange}
-            />
-          </FormControl>
-          <FormControl mt={4}>
-            <FormLabel>Job</FormLabel>
-            <Input
-              type="text"
-              placeholder="Enter Job"
-              name="job"
-              value={detail.job}
-              onChange={handleChange}
-            />
-          </FormControl>
-          <FormControl mt={4}>
-            <FormLabel>Image</FormLabel>
-            <Input
-              type="text"
-              placeholder="Enter Image URL"
-              name="image"
-              value={detail.image}
-              onChange={handleChange}
-            />
+            >
+              <option value="user">User</option>
+              <option value="teacher">Teacher</option>
+            </Select>
           </FormControl>
           <Button
             mt={4}
