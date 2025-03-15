@@ -58,7 +58,9 @@ Learn Link allows teachers to create personalized courses, while students can ex
 ### Admin Account
 - **Email:** admin@gmail.com
 - **Password:** teacher12345
-
+## Teacher Account
+- **Email:** teacher@gmail.com
+- **Password:** password
 ### Student Account
 - **Email:** sita@gmail.com
 - **Password:**  123456789
